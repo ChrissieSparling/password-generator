@@ -3,13 +3,15 @@ var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
-  var password = getUserInput();
+  var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
 
 }
+//add event listener
 generateBtn.addEventListener('click', writePassword);
+//create index
 var numericCharacters =  ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 var specialCharacters = [  '@',  '%',  '+',  '\\',  '/',  "'",  '!',  '#',  '$',  '^',  '?',  ':',  ',',  ')',  '(',  '}',  '{',  ']',  '[',  '~',  '-',  '_',  '.'];
 var lowerCase = [  'a',  'b',  'c',  'd',  'e',  "f",  'g',  'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',  'p',  'q',  'r',  's',  't',  'u',  'v',  'w',  'x',  'y',  'z'];
@@ -22,13 +24,18 @@ var indexValue= array[index]
 return indexValue
 }
 
-
-
 //get user input through confirms and prompts
+
 function getUserInput(){
   var passwordLength= prompt("how long would you like your password to be?")
-
-
+if(passwordLength >128){
+     alert("password needs to be fewer than 128 characters!")
+     return;
+}
+if(passwordLength <8){
+     alert("password needs to be greater than 8 characters!")
+     return;
+}
 var hasNumbers= confirm("would you like your password to have numbers? ")
 var upperCase= confirm("would you like capital letters in your password? ")
 
@@ -48,6 +55,38 @@ return userchoice
 
 }
 
-//create fuction to randomize arrays that we use
+function generatePassword(){
+     var getUserChoice= getUserInput();
+     var optionPool=[];
+     var newPassword=[];
+if(getUserChoice.confirmSymbols===true){
+     optionPool=optionPool.concat(specialCharacters);
+     optionPool.push(shuffle(specialCharacters));
 
-//giant function to put it all together
+}
+if(getUserChoice.confirmLowerCase===true){
+     optionPool=optionPool.concat(lowerCase);
+     optionPool.push(shuffle(lowerCase));
+}
+
+if(getUserChoice.confirmupperCase===true){
+     optionPool=optionPool.concat(upperCase);
+     optionPool.push(shuffle(upperCase));
+
+}
+
+if(getUserChoice.confirmNumbers===true){
+     optionPool=optionPool.concat(numbers);
+     optionPool.push(shuffle(numbers));
+
+}
+
+for (var i = 0; i<getUserChoice.confirmLength;i++){
+     var stagePassword= shuffle(optionPool);
+     newPassword.push(stagePassword);
+}
+console.log(newPassword.join(""))
+return newPassword.join("")
+
+
+}
